@@ -1,10 +1,10 @@
 # MCP PLC Core 🏭
 
-**Universal MCP Server for industrial PLC communication — prilagodljiv za VSE vrste PLC krmilnikov.**
+**Universal MCP Server for industrial PLC communication — works with ANY PLC.**
 
-Deluje s katerimkoli industrijskim krmilnikom: Siemens, Schneider, ABB, WAGO, CODESYS, Mitsubishi, Omron, Allen-Bradley, Arduino, ESP32, ali katerikoli drug PLC. Implementiraj adapter za svoj tip in MCP server takoj deluje.
+Connect any industrial controller to AI agents (Claude, GPT, OpenClaw) via MCP protocol. Siemens, Schneider, ABB, Mitsubishi, Omron, Allen-Bradley, WAGO, CODESYS, Arduino, ESP32, or any custom PLC — write an adapter and it just works.
 
-> **Ne najdeš svojega PLC-ja?** Napiši adapter — traja 15 minut. Vse kar potrebuješ je implementirati 6 metod v `PLCAdapter` interface.
+> **Don't see your PLC?** Write an adapter — takes 15 minutes. Just implement 6 methods in the `PLCAdapter` interface.
 
 ```
 AI Agent (Claude, GPT, OpenClaw)
@@ -27,7 +27,7 @@ PLC_HOST=192.168.1.100 npx mcp-plc --adapter modbus
 npm install nodes7
 PLC_HOST=192.168.1.100 npx mcp-plc --adapter s7
 
-# Mitsubishi / Omron / Allen-Bradley / karkoli drugega
+# Mitsubishi / Omron / Allen-Bradley / anything else
 npx mcp-plc --adapter ./my-custom-adapter.js
 ```
 
@@ -38,11 +38,11 @@ npx mcp-plc --adapter ./my-custom-adapter.js
 | `modbus` | Modbus TCP | 502 | Schneider, ABB, WAGO, CODESYS, Arduino |
 | `s7` | S7 (RFC1006) | 102 | Siemens S7-1200/1500/300/400 |
 
-## Custom Adapter — Deluje s KATERIMKOLI PLC-jem
+## Custom Adapter — Works with ANY PLC
 
-Implement the `PLCAdapter` interface for your PLC. Ne glede na proizvajalca, protocol ali model — če imaš TCP/IP ali serijsko povezavo, lahko napišeš adapter.
+Implement the `PLCAdapter` interface for your PLC. Regardless of manufacturer, protocol, or model — if it has TCP/IP or serial connectivity, you can write an adapter.
 
-**Primeri za katere lahko napišeš adapter:**
+**PLCs you can write adapters for:**
 - Siemens S7-200/300/400/1200/1500/1700
 - Schneider M340/M580/Modicon
 - ABB AC500/AC580
@@ -50,17 +50,14 @@ Implement the `PLCAdapter` interface for your PLC. Ne glede na proizvajalca, pro
 - Omron NJ/NX/NP
 - Allen-Bradley ControlLogix/CompactLogix
 - WAGO PFC200/750
-- CODESYS krmilniki
+- CODESYS-based controllers
 - Bosch Rexroth IndraMotion
 - Beckhoff TwinCAT
 - Fanuc CNC (FOCAS)
 - Haas / DMG Mori / Mazak
 - Arduino + EthernetShield
 - ESP32 + Modbus/S7 gateway
-- Katerikoli custom TCP/UDP protokol
-
-```typescript
-import { PLCAdapter, SensorData, AlarmData, StatusData, SetpointData, OutputData } from "mcp-plc-core";
+- Any custom TCP/UDP protocol
 
 ```typescript
 import { PLCAdapter, SensorData, AlarmData, StatusData, SetpointData, OutputData } from "mcp-plc-core";
@@ -195,18 +192,15 @@ src/
 └── adapters/
     ├── modbus.ts       ← Modbus TCP adapter (built-in)
     └── s7.ts           ← Siemens S7 adapter (built-in)
-
-examples/
-├── custom-adapter.ts   ← How to write your own adapter
-└── multi-plc.ts        ← Multiple PLCs in one server
 ```
 
 ## Writing a New Adapter
 
-6 metod. 15 minut. Deluje s katerimkoli PLC-jem.
+6 methods. 15 minutes. Works with any PLC.
 
 1. Create `src/adapters/myplc.ts`
-2. Implement `PLCAdapter` interface (6 methods):
+2. Implement `PLCAdapter` interface (6 methods)
+3. Register in `cli.ts`:
 
 ```typescript
 if (adapterName === "myplc") {
@@ -235,7 +229,7 @@ if (adapterName === "myplc") {
 | Haas NGC | 🔨 Community needed | — |
 | Any custom TCP/UDP | ✅ Adapter interface | `PLCAdapter` |
 
-**Ne najdeš svojega protokola?** Implementiraj `PLCAdapter` interface — 6 metod, 15 minut dela. Objavi PR in bo vgrajen naslednji release.
+**Don't see your protocol?** Implement `PLCAdapter` — 6 methods, 15 minutes of work. Submit a PR and it'll be in the next release.
 
 ## Environment Variables
 
